@@ -5,23 +5,14 @@ class Solution {
             pq.add(new int[]{score[i], i});
         }
         String[] res = new String[score.length];
-        int rank = 0;
-        if(!pq.isEmpty()){
-            int[] x = pq.poll();
-            res[x[1]] = "Gold Medal";
-            rank++;
-        }if(!pq.isEmpty()){        
-            int[] y = pq.poll();
-            res[y[1]] = "Silver Medal";
-            rank++;
-        }if(!pq.isEmpty()){    
-            int[] z = pq.poll();
-            res[z[1]] = "Bronze Medal";
-            rank++;
-        }while(!pq.isEmpty()){
+        int rank = 1;
+        while(!pq.isEmpty()){
             int[] cur = pq.poll();
+            if(rank == 1) res[cur[1]] = "Gold Medal";
+            else if(rank ==2) res[cur[1]] = "Silver Medal";
+            else if(rank == 3) res[cur[1]] = "Bronze Medal";
+            else res[cur[1]] = String.valueOf(rank);
             rank++;
-            res[cur[1]] = String.valueOf(rank);
         }
         return res;
     }
