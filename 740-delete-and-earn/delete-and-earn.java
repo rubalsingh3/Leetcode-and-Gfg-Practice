@@ -1,21 +1,25 @@
 class Solution {
     public int deleteAndEarn(int[] nums) {
-        int[] points = new int[10001];
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for(int n : nums) map.put(n, map.getOrDefault(n, 0) + n);
 
-        for(int n : nums) {
-            points[n] += n;
-        }
+        List<Integer> values = new ArrayList<>(map.keySet());
 
+        Collections.sort(values);
         int take = 0;
         int skip = 0;
-
-        for(int num = 1; num <= 10000; num++) {
+        int prev = -1;
+        
+        for(int num : values){
             int temp = Math.max(take, skip);
-
-            take = skip + points[num];
+            if(num == prev +1){
+                take = skip + map.get(num);
+            }else{
+                take = temp + map.get(num);
+            }
             skip = temp;
+            prev = num;
         }
-
         return Math.max(take, skip);
     }
 }
