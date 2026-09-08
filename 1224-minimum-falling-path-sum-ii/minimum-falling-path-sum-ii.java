@@ -5,7 +5,7 @@ class Solution {
 
         int[][] dp = new int[n][n];
         for(int row[] : dp) {
-            Arrays.fill(row, Integer.MAX_VALUE);
+            Arrays.fill(row, -1);
         }
         for(int i=0; i<n; i++){
             ans = Math.min(ans, solve(n-1, i, grid, dp));
@@ -14,7 +14,7 @@ class Solution {
     }
     public int solve(int i, int j, int[][] grid, int[][] dp){
         if(i == 0) return grid[i][j];
-        if(dp[i][j] != Integer.MAX_VALUE) return dp[i][j];
+        if(dp[i][j] != -1) return dp[i][j];
         int min = Integer.MAX_VALUE;
         for(int col=0; col<grid.length; col++){
             if(col != j){
