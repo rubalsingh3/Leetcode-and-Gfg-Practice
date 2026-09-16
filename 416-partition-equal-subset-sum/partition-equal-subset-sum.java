@@ -6,7 +6,8 @@ class Solution {
         }
         int x = total / 2;
 
-        Boolean[][] dp = new Boolean[nums.length+1][total+1];
+        // Boolean has null which can be used as Check
+        Boolean[][] dp = new Boolean[nums.length+1][x+1];
         for(Boolean[] row : dp) Arrays.fill(row, null);
 
         if(total % 2 == 0) return solve(nums, 0, x, dp);
