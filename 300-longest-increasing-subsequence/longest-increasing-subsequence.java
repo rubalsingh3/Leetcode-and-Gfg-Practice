@@ -1,19 +1,22 @@
 class Solution {
     public int lengthOfLIS(int[] nums) {
+        // 1 to n approach
+
         int n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);
 
-        int[][] dp = new int[n+1][n+1];
-
-        for(int i=n-1; i>=0; i--){
-            for(int prev=i-1; prev>=-1; prev--){
-                int skip = dp[i+1][prev+1];
-                int take = 0;
-                if(prev == -1 || nums[i] > nums[prev]){
-                    take = 1 + dp[i+1][i+1];
-                }
-                dp[i][prev+1] = Math.max(take, skip);
+        for (int i = 1; i < n; i++){
+            for (int p = 0; p < i; p++){
+                if (nums[i] > nums[p])
+                    dp[i] = Math.max(dp[i], dp[p] + 1);
             }
         }
-        return dp[0][0];
+        int maxLen = 1;
+        for (int i = 0; i < n; i++){
+            maxLen = Math.max(maxLen, dp[i]);
+        }
+        return maxLen;
+
     }
 }
