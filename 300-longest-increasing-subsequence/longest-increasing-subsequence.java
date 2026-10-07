@@ -1,24 +1,19 @@
 class Solution {
     public int lengthOfLIS(int[] nums) {
-        int[][] dp = new int[nums.length][nums.length];
-        return solve(nums, 0, -1, dp);
-    }
-    public int solve(int[] nums, int i, int prev, int[][] dp){
-        if(i == nums.length) return 0;
+        int n = nums.length;
 
-        // dp check
-        if(prev != -1 && dp[i][prev] != 0) return dp[i][prev];
-        // take condition
-        int take = 0;
-        if(prev == -1 || nums[prev] < nums[i]){
-            take = 1 + solve(nums, i+1, i, dp);
+        int[][] dp = new int[n+1][n+1];
+
+        for(int i=n-1; i>=0; i--){
+            for(int prev=i-1; prev>=-1; prev--){
+                int skip = dp[i+1][prev+1];
+                int take = 0;
+                if(prev == -1 || nums[i] > nums[prev]){
+                    take = 1 + dp[i+1][i+1];
+                }
+                dp[i][prev+1] = Math.max(take, skip);
+            }
         }
-        // skip condition
-        int skip = solve(nums, i+1, prev, dp);
-        
-        if(prev != -1){
-            dp[i][prev] = Math.max(take, skip);
-        } 
-        return Math.max(take, skip);
+        return dp[0][0];
     }
 }
