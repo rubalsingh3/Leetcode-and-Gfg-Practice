@@ -1,36 +1,32 @@
 class Solution {
     public int minCut(String s) {
-        int n = s.length();
-        Boolean[][] pali = new Boolean[n][n];
-        int[][] dp = new int[n][n];
-        for(int[] row : dp) Arrays.fill(row, -1);
+        int[] dp = new int[s.length()];
+        Arrays.fill(dp, -1);
 
-        for(int i=n-1; i>=0; i--){
-            for(int j=i; j<n; j++){
-                if(s.charAt(i) == s.charAt(j)){
-                    if(j-i <= 2) pali[i][j] = true;
-                    else pali[i][j] = pali[i+1][j-1];
-                }else {
-                    pali[i][j] = false;
-                }
+        Boolean[][] pali = new Boolean[s.length()][s.length()];
+        return solve(s, 0, dp, pali) - 1;
+    }
+    public int solve(String s, int i, int[] dp, Boolean[][] pali){
+        if(i == s.length()) return 0;
+        if(dp[i] != -1) return dp[i];
+
+        int ans = Integer.MAX_VALUE;
+        for(int k=i; k<s.length(); k++){
+            if(palin(s, i, k, pali)){
+                ans = Math.min(ans, 1 + solve(s, k+1, dp, pali));
             }
         }
-        return solve(s, 0, n-1, pali, dp);
-        
+        return dp[i] = ans;
     }
-    public static int solve(String s, int i, int j, Boolean[][] pali, int[][] dp){
-        if(i >= j || pali[i][j]) return 0;
-        if(dp[i][j] != -1) return dp[i][j];
+    public boolean palin(String s, int i, int j, Boolean[][] pali){
+        if(i >= j) return true;
 
-        int cuts = Integer.MAX_VALUE;
-        
-        for(int k = i; k <= j; k++){
-            if(pali[i][k]){
-                int temp = 1 + solve(s, k+1, j, pali, dp);
-                cuts = Math.min(cuts, temp);
-            }
+        if(pali[i][j] != null) return pali[i][j];
+
+        if(s.charAt(i) != s.charAt(j)){
+            return pali[i][j] = false;
         }
-        return dp[i][j] = cuts;
+
+        return pali[i][j] = palin(s, i + 1, j - 1, pali);
     }
-    
 }
