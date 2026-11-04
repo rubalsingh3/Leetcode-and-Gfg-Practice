@@ -7,12 +7,16 @@ class Solution {
             for(int i = 0; i <= n-len; i++){
                 int j = i + len - 1;
                 for(int k = i; k <= j; k++){
+                    // left and right are initially 1 
+                    // if any value exists if replaces left and right
                     int left = 1;
                     int right = 1;
 
                     if(i != 0) left = nums[i-1];
                     if(j != n-1) right = nums[j+1];
 
+                    // before and after are initially 0
+                    // to avoid accessing out of bound index
                     int before = 0;
                     int after = 0;
 
