@@ -13,8 +13,6 @@ class Solution {
         return bfs(adj, vis, source, destination);
     }
     public boolean bfs(List<List<Integer>> adj, boolean[] vis, int node, int dest){
-        if(node == dest) return true;
-
         Queue<Integer> q = new LinkedList<>();
         q.add(node);
         vis[node] = true;
@@ -22,10 +20,12 @@ class Solution {
         while(!q.isEmpty()){
             int temp = q.poll();
 
+            if(temp == dest) return true;
+
             for(int neigh : adj.get(temp)){
                 if(!vis[neigh]){
+                    vis[neigh] = true;
                     q.add(neigh);
-                    if(bfs(adj, vis, neigh, dest)) return true;
                 }
             }
             
