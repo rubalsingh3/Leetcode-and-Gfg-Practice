@@ -1,23 +1,34 @@
 class Solution {
     public boolean validPath(int n, int[][] edges, int source, int destination) {
-        List<List<Integer>> graph = new ArrayList<>();
+        List<List<Integer>> adj = new ArrayList<>();
         for(int i=0; i<n; i++){
-            graph.add(new ArrayList<>());
+            adj.add(new ArrayList<>());
         }
         for(int[] e : edges){
-            graph.get(e[0]).add(e[1]);
-            graph.get(e[1]).add(e[0]);
+            adj.get(e[0]).add(e[1]);
+            adj.get(e[1]).add(e[0]);
         }
+
         boolean[] vis = new boolean[n];
-        return dfs(graph,vis,source,destination);
+        return bfs(adj, vis, source, destination);
     }
-    public boolean dfs(List<List<Integer>> graph, boolean[] vis, int node, int dest){
+    public boolean bfs(List<List<Integer>> adj, boolean[] vis, int node, int dest){
         if(node == dest) return true;
+
+        Queue<Integer> q = new LinkedList<>();
+        q.add(node);
         vis[node] = true;
-        for(int nei : graph.get(node)){
-            if(!vis[nei]){
-                if(dfs(graph,vis,nei,dest)) return true;
+
+        while(!q.isEmpty()){
+            int temp = q.poll();
+
+            for(int neigh : adj.get(temp)){
+                if(!vis[neigh]){
+                    q.add(neigh);
+                    if(bfs(adj, vis, neigh, dest)) return true;
+                }
             }
+            
         }
         return false;
     }
