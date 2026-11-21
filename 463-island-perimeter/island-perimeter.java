@@ -6,28 +6,18 @@ class Solution {
         m = grid[0].length;
 
         int res = 0;
-        int[][] vis = new int[n][m];
-        for(int[] x : vis) Arrays.fill(x, 0);
 
         for(int i = 0; i < n; i++){
             for(int j = 0; j < m; j++){
-                if(grid[i][j] != 0){
-                    res += dfs(grid, i, j, vis);
-                }
+                if(grid[i][j] == 1){
+                    if(i == 0 || grid[i-1][j] == 0) res++;
+                    if(i == n-1 || grid[i+1][j] == 0) res++;
+                    if(j == 0 || grid[i][j-1] == 0) res++;
+                    if(j == m-1 || grid[i][j+1] == 0) res++;
+                }              
+                
             }
         }
         return res;
-    }
-    public int dfs(int[][] grid, int i, int j, int[][] vis){
-        if(i < 0 || i >= n || j < 0 || j >= m) return 1;
-        if(grid[i][j] == 0) return 1;
-
-        if(vis[i][j] == 1) return 0;
-        
-        vis[i][j] = 1;
-        return dfs(grid, i+1, j, vis) + 
-                dfs(grid, i-1, j, vis) + 
-                dfs(grid, i, j+1, vis) +
-                dfs(grid, i, j-1, vis);
     }
 }
