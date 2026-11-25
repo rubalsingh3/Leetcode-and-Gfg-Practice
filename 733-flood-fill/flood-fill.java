@@ -1,23 +1,50 @@
 class Solution {
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
-        int[][] vis = new int[image.length][image[0].length];
-        for(int[] x : vis) Arrays.fill(x, 0);
+        // int n = image.length;
+        // int m = image[0].length;
 
-        dfs(image, sr, sc, color, image[sr][sc], vis);
-        return image;        
+        // int[][] vis = new int[n][m];
+        // for(int[] row : vis) Arrays.fill(row, -1);
+
+        // int original = image[sr][sc];
+
+        return bfs(image, sr, sc, color);
+
     }
-    public void dfs(int[][] grid, int i, int j, int color, int original, int[][] vis){
-        if(i < 0 || i >= grid.length || j < 0 || j >= grid[0].length) return;
-        if(grid[i][j] != original) return;
-
-        if(vis[i][j] == 1) return;
+    public int[][] bfs(int[][] image, int i, int j, int color){
+        int n = image.length;
+        int m = image[0].length;
         
-        vis[i][j] = 1;
-        grid[i][j] = color;
+        Queue<int[]> q = new LinkedList<>();
 
-        dfs(grid, i-1, j, color, original, vis);
-        dfs(grid, i+1, j, color, original, vis);
-        dfs(grid, i, j-1, color, original, vis);
-        dfs(grid, i, j+1, color, original, vis);
+        q.add(new int[]{i, j});
+        int strt = image[i][j];
+        image[i][j] = color;
+
+        if(strt == color ) return image;
+        // vis[i][j] = 1;
+
+        int[] dx = {-1,1,0,0};
+        int[] dy = {0,0,-1,1};
+
+        while(!q.isEmpty()){
+            int[] curr = q.poll();
+
+            int x = curr[0];
+            int y = curr[1];
+
+            
+            for(int k = 0; k < 4; k++){
+                int nx = x + dx[k];
+                int ny = y + dy[k];
+
+                if(nx >= 0 && nx < n && ny >= 0 && ny < m && image[nx][ny] == strt){
+                    // vis[nx][ny] = 1;
+                    image[nx][ny] = color;
+                    q.add(new int[]{nx, ny});
+                }
+            }
+        }
+        return image;
     }
 }
